@@ -5,9 +5,7 @@ jQuery(function($) {
 			navigator.geolocation.getCurrentPosition(
 				function(position) {
 					console.log(position);
-					var lat = position.coords.latitude;
-					var lon = position.coords.longitude;
-					getPlaces(lat,lon);
+					getPlaces(position.coords.latitude,position.coords.longitude);
 				}
 			);
 		}
@@ -36,7 +34,8 @@ function getapis(data) {
 			markers[i] = new google.maps.Marker({
         		position: myLatlng, 
 		        map: window.wikimap.map,
-        		title:item.title
+        		title:item.title,
+			icon:'../../img/notvisited.png'
 			}); 		
 		
 			bounds.extend(myLatlng);
@@ -80,7 +79,7 @@ function getPlaces(lat, lon) {
 	opts = {
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		center: new google.maps.LatLng(lat, lon),
-		zoom: 5
+		zoom: 7
 	};
 	//window.wikimap.map.setOptions(opts);
 	geocoder = new google.maps.Geocoder();
@@ -94,7 +93,9 @@ function getPlaces(lat, lon) {
 	});
 	var responseType = 'json';
 	var url = 'http://api.wikilocation.org/articles?limit=50&radius=5000&format=' + responseType + '&lat=' + lat + '&lng=' + lon + '&jsonp=getapis&callback=?';
-	$.getJSON(url, function(data){});
+	$.getJSON(url, function(data){
+		console.log(data);
+	});
 }
 
 function codeAddress() {
@@ -112,9 +113,29 @@ function codeAddress() {
 			coords = coords.replace("(","");			
 			coords = coords.split(",");
 			getPlaces(coords[0],coords[1]);
-			
+			var params = {
+            			q: results[0].address_components[1].long_name,
+            			rpp: 6
+        		};
+
+			searchTwitter(params);
 		} else {
 			alert("Geocode was not successful for the following reason: " + status);
 		}
 	});
+}
+
+function searchTwitter(query) {
+    $.ajax({
+        url: 'http://search.twitter.com/search.json?' + jQuery.param(query),
+        dataType: 'jsonp',
+        success: function(data) {
+	    var tweets = $('#twitter_feed');
+	    $('#twitter_feed').find('.tweet').remove('.tweet');
+            //tweets.html('');
+            for (res in data['results']) {
+                tweets.append('<div class="tweet">' + data['results'][res]['from_user'] + ' wrote: <p>' + data['results'][res]['text'] + '</p></div>');
+        	}
+        }
+    });
 }

@@ -14,7 +14,10 @@
 				<input id="address" type="textbox" value="Berlin, Germany">
 				<input id="submit" type="submit" value="wikify!">
 			</form>
-			<div id="map_canvas" style="width: 100%; height: 70%;"></div>
+			<div id="container">
+				<div id="map_canvas"></div>
+				<div id="twitter_feed"><h3 class='twitter_title'>What the Twitterverse is saying</h3></div>
+			</div>
 			<script type="text/javascript">	
 				jQuery(function($) {
 					var canvas = $('#map_canvas'),
@@ -30,7 +33,6 @@
 					window.wikimap.infoWindows = [];
 					window.wikimap.map = map;
 				});
-
 			</script>
 </body>
 </html>
