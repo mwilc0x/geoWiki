@@ -9,14 +9,12 @@
 	<link href='http://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
 </head>
 <body>
-		<h1>geowiki</h1>
-			<form action="" onsubmit="codeAddress();return false;">
-				<input id="address" type="textbox" value="Berlin, Germany">
-				<input id="submit" type="submit" value="wikify!">
+			<form id="search_form" action="" onsubmit="codeAddress();return false;">
+				<input id="address" type="textbox" value="miami, fl">
+				<input id="submit" type="submit" value="search">
 			</form>
 			<div id="container">
 				<div id="map_canvas"></div>
-				<div id="twitter_feed"><h3 class='twitter_title'>What the Twitterverse is saying</h3></div>
 			</div>
 			<script type="text/javascript">	
 				jQuery(function($) {
@@ -24,7 +22,7 @@
 						opts = {
 							mapTypeId: google.maps.MapTypeId.ROADMAP,
 							center: new google.maps.LatLng(31, 23),
-							zoom: 1
+							zoom: 8
 						},
 						map = new google.maps.Map(canvas[0], opts);
 

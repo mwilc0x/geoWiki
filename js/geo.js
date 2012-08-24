@@ -117,8 +117,6 @@ function codeAddress() {
             			q: results[0].address_components[1].long_name,
             			rpp: 6
         		};
-
-			searchTwitter(params);
 		} else {
 			alert("Geocode was not successful for the following reason: " + status);
 		}
